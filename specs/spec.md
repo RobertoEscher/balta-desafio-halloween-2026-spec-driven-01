@@ -12,6 +12,7 @@
 
 ## Histórias
 - Como organizador, quero cadastrar os dados de um contato.
+- Como organizador, quero editar os dados de um contato.
 - Como organizador, quero consultar os dados de um contato pelo nome completo.
 
 ## Requisitos funcionais
@@ -20,7 +21,7 @@
 - RF-03: Feedback visual: após a gravação correta dos dados, o sistema deve exibir a mensagem "Contato salvo com sucesso!".
 - RF-04: Botão "Salvar": após o salvamento bem-sucedido, o botão deve permanecer desabilitado até o organizador iniciar um novo cadastro. Em caso de falha no salvamento, deve ser possível tentar novamente.
 - RF-05: Consulta: o sistema deve permitir buscar pelo nome completo, sem diferenciar letras maiúsculas de minúsculas. Se houver mais de um contato com o mesmo nome, deve exibir todos os correspondentes.
-Edição: Deve ser permitido editar um determinado contato e salvá-lo.
+- RF-06: Edição: Deve ser permitido editar os dados um determinado contato e salvá-lo.
 
 ## Regras de negócio
 - RN-01: Campos obrigatórios: "Nome" e "Telefone completo" são obrigatórios para criar um contato.
@@ -28,7 +29,7 @@ Edição: Deve ser permitido editar um determinado contato e salvá-lo.
 - RN-03: Nome: remover espaços em branco no início e no fim. Se o nome exceder 50 caracteres, truncá-lo para 50 caracteres. Outros caracteres, inclusive caracteres especiais e emojis, são permitidos.
 - RN-04: Telefone completo: deve conter o DDD seguido do número de telefone, com 10 dígitos no total para telefones fixos ou 11 dígitos no total para celulares.
 - RN-05: Validação do DDD: validar somente a quantidade total de dígitos do telefone completo; não verificar se o DDD é válido segundo a ANATEL.
-- RN-06: Normalização do telefone: aceitar separadores de formatação, como parênteses, espaços e hífen, e considerar apenas os dígitos para validação, salvamento e verificação de unicidade.
+- RN-06: Normalização do telefone: não aceitar separadores de formatação, como parênteses, espaços e hífen, e considerar apenas os dígitos para validação, salvamento e verificação de unicidade.
 
 ## Casos de borda
 - Nome com 5.000 caracteres: após remover espaços externos, truncar o nome para os primeiros 50 caracteres.
@@ -48,7 +49,7 @@ Edição: Deve ser permitido editar um determinado contato e salvá-lo.
 - Após salvar corretamente, deve ser exibida a mensagem "Contato salvo com sucesso!" e o botão "Salvar" deve permanecer desabilitado até iniciar um novo cadastro.
 - Deve ser possível consultar um contato pelo nome completo, sem diferenciar maiúsculas de minúsculas.
 - Se mais de um contato tiver o nome consultado, todos devem ser exibidos.
-- Não deve ser possível cadastrar dois contatos com o mesmo telefone completo após a normalização.
+- Não deve ser possível cadastrar dois contatos com o mesmo nome e telefone completo após a normalização.
 - O nome deve ser aparado e truncado para até 50 caracteres, conforme as regras definidas.
 - O telefone completo deve ser aceito quando tiver 10 ou 11 dígitos após a normalização, independentemente da validade ANATEL do DDD.
-- Deve ser permitido editar um determinado contato cadastrado.
+- Deve ser permitido criar, editar, consultar e salvar os dados de um determinado contato cadastrado.

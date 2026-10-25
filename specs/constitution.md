@@ -1,6 +1,8 @@
 # Constituição do projeto
 
 ## Stack
+- .NET 10, C#, Minimal API
+- Persistência em SQLite via EF Core
 - Testes com xUnit
 
 ## Arquitetura
