@@ -15,20 +15,20 @@
 - Como organizador, quero consultar os dados de um contato pelo nome completo.
 
 ## Requisitos funcionais
-RF-01: Formulário de cadastro: o sistema deve exibir os campos "Nome" e "Telefone completo".
-RF-02: Salvamento de dados: o sistema deve permitir salvar as informações preenchidas na agenda única em um banco de dados.
-RF-03: Feedback visual: após a gravação correta dos dados, o sistema deve exibir a mensagem "Contato salvo com sucesso!".
-RF-04: Botão "Salvar": após o salvamento bem-sucedido, o botão deve permanecer desabilitado até o organizador iniciar um novo cadastro. Em caso de falha no salvamento, deve ser possível tentar novamente.
-RF-05: Consulta: o sistema deve permitir buscar pelo nome completo, sem diferenciar letras maiúsculas de minúsculas. Se houver mais de um contato com o mesmo nome, deve exibir todos os correspondentes.
+- RF-01: Formulário de cadastro: o sistema deve exibir os campos "Nome" e "Telefone completo".
+- RF-02: Salvamento de dados: o sistema deve permitir salvar as informações preenchidas na agenda única em um banco de dados.
+- RF-03: Feedback visual: após a gravação correta dos dados, o sistema deve exibir a mensagem "Contato salvo com sucesso!".
+- RF-04: Botão "Salvar": após o salvamento bem-sucedido, o botão deve permanecer desabilitado até o organizador iniciar um novo cadastro. Em caso de falha no salvamento, deve ser possível tentar novamente.
+- RF-05: Consulta: o sistema deve permitir buscar pelo nome completo, sem diferenciar letras maiúsculas de minúsculas. Se houver mais de um contato com o mesmo nome, deve exibir todos os correspondentes.
 Edição: Deve ser permitido editar um determinado contato e salvá-lo.
 
 ## Regras de negócio
-RN-01: Campos obrigatórios: "Nome" e "Telefone completo" são obrigatórios para criar um contato.
-RN-02: Unicidade: não deve ser permitido cadastrar dois contatos com o mesmo número de telefone completo, após a normalização.
-RN-03: Nome: remover espaços em branco no início e no fim. Se o nome exceder 50 caracteres, truncá-lo para 50 caracteres. Outros caracteres, inclusive caracteres especiais e emojis, são permitidos.
-RN-04: Telefone completo: deve conter o DDD seguido do número de telefone, com 10 dígitos no total para telefones fixos ou 11 dígitos no total para celulares.
-RN-05: Validação do DDD: validar somente a quantidade total de dígitos do telefone completo; não verificar se o DDD é válido segundo a ANATEL.
-RN-06: Normalização do telefone: aceitar separadores de formatação, como parênteses, espaços e hífen, e considerar apenas os dígitos para validação, salvamento e verificação de unicidade.
+- RN-01: Campos obrigatórios: "Nome" e "Telefone completo" são obrigatórios para criar um contato.
+- RN-02: Unicidade: não deve ser permitido cadastrar dois contatos com o mesmo número de telefone completo, após a normalização.
+- RN-03: Nome: remover espaços em branco no início e no fim. Se o nome exceder 50 caracteres, truncá-lo para 50 caracteres. Outros caracteres, inclusive caracteres especiais e emojis, são permitidos.
+- RN-04: Telefone completo: deve conter o DDD seguido do número de telefone, com 10 dígitos no total para telefones fixos ou 11 dígitos no total para celulares.
+- RN-05: Validação do DDD: validar somente a quantidade total de dígitos do telefone completo; não verificar se o DDD é válido segundo a ANATEL.
+- RN-06: Normalização do telefone: aceitar separadores de formatação, como parênteses, espaços e hífen, e considerar apenas os dígitos para validação, salvamento e verificação de unicidade.
 
 ## Casos de borda
 - Nome com 5.000 caracteres: após remover espaços externos, truncar o nome para os primeiros 50 caracteres.
