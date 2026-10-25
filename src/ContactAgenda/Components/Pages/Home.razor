@@ -1,0 +1,188 @@
+@page "/"
+@rendermode InteractiveServer
+@inject ContactService ContactService
+
+<PageTitle>Agenda de contatos</PageTitle>
+
+<h1>Agenda de contatos</h1>
+
+<section class="contact-section">
+    <h2>@(editingId.HasValue ? "Editar contato" : "Cadastrar contato")</h2>
+
+    <EditForm Model="form" OnValidSubmit="SaveAsync" FormName="contact-form">
+        <div class="mb-3">
+            <label for="contact-name" class="form-label">Nome</label>
+            <InputText id="contact-name" class="form-control" @bind-Value="form.Name" required maxlength="5000" />
+        </div>
+        <div class="mb-3">
+            <label for="contact-phone" class="form-label">Telefone completo</label>
+            <InputText id="contact-phone" class="form-control" @bind-Value="form.Phone" required />
+            <div class="form-text">Informe o DDD e o número, com 10 ou 11 dígitos.</div>
+        </div>
+
+        @if (editingId.HasValue)
+        {
+            <p>Editando o contato @editingId.</p>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(saveMessage))
+        {
+            <div class="alert alert-success" role="status">@saveMessage</div>
+        }
+
+        @if (errors.Count > 0)
+        {
+            <div class="alert alert-danger" role="alert">
+                <ul class="mb-0">
+                    @foreach (var error in errors)
+                    {
+                        <li>@error</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <button class="btn btn-primary" type="submit" disabled="@(isSaving || isSaved)">
+            @(isSaving ? "Salvando..." : "Salvar")
+        </button>
+        <button class="btn btn-outline-secondary ms-2" type="button" @onclick="StartNewContact">Novo cadastro</button>
+    </EditForm>
+</section>
+
+<section class="contact-section">
+    <h2>Consultar contato</h2>
+    <form @onsubmit="SearchAsync" @onsubmit:preventDefault>
+        <label for="search-name" class="form-label">Nome completo</label>
+        <div class="input-group">
+            <input id="search-name" class="form-control" @bind="searchName" />
+            <button class="btn btn-outline-primary" type="submit">Buscar</button>
+        </div>
+    </form>
+
+    @if (!string.IsNullOrWhiteSpace(searchMessage))
+    {
+        <p class="mt-3" role="status">@searchMessage</p>
+    }
+
+    @if (searchResults.Count > 0)
+    {
+        <div class="table-responsive mt-3">
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Telefone completo</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var contact in searchResults)
+                    {
+                        <tr>
+                            <td>@contact.Name</td>
+                            <td>@contact.Phone</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary" type="button" @onclick="() => EditContact(contact)">
+                                    Editar
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>
+
+@code {
+    private ContactForm form = new();
+    private List<Contact> searchResults = [];
+    private List<string> errors = [];
+    private string searchName = string.Empty;
+    private string? searchMessage;
+    private string? saveMessage;
+    private int? editingId;
+    private bool isSaving;
+    private bool isSaved;
+
+    private async Task SaveAsync()
+    {
+        isSaving = true;
+        errors.Clear();
+        saveMessage = null;
+
+        try
+        {
+            if (editingId.HasValue)
+            {
+                await ContactService.UpdateAsync(editingId.Value, form.Name, form.Phone);
+            }
+            else
+            {
+                await ContactService.CreateAsync(form.Name, form.Phone);
+            }
+
+            saveMessage = "Contato salvo com sucesso!";
+            isSaved = true;
+        }
+        catch (ContactValidationException exception)
+        {
+            errors.AddRange(exception.Errors.Values.SelectMany(messages => messages));
+        }
+        catch (DuplicatePhoneException exception)
+        {
+            errors.Add(exception.Message);
+        }
+        catch (ContactNotFoundException exception)
+        {
+            errors.Add(exception.Message);
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+
+    private async Task SearchAsync()
+    {
+        searchMessage = null;
+        searchResults = [];
+
+        try
+        {
+            searchResults = (await ContactService.SearchByNameAsync(searchName)).ToList();
+            if (searchResults.Count == 0)
+            {
+                searchMessage = "Nenhum contato encontrado.";
+            }
+        }
+        catch (ContactValidationException exception)
+        {
+            searchMessage = exception.Errors.Values.SelectMany(messages => messages).First();
+        }
+    }
+
+    private void EditContact(Contact contact)
+    {
+        editingId = contact.Id;
+        form = new ContactForm { Name = contact.Name, Phone = contact.Phone };
+        isSaved = false;
+        saveMessage = null;
+        errors.Clear();
+    }
+
+    private void StartNewContact()
+    {
+        editingId = null;
+        form = new ContactForm();
+        isSaved = false;
+        saveMessage = null;
+        errors.Clear();
+    }
+
+    private sealed class ContactForm
+    {
+        public string? Name { get; set; }
+        public string? Phone { get; set; }
+    }
+}

@@ -49,7 +49,7 @@
 - Após salvar corretamente, deve ser exibida a mensagem "Contato salvo com sucesso!" e o botão "Salvar" deve permanecer desabilitado até iniciar um novo cadastro.
 - Deve ser possível consultar um contato pelo nome completo, sem diferenciar maiúsculas de minúsculas.
 - Se mais de um contato tiver o nome consultado, todos devem ser exibidos.
-- Não deve ser possível cadastrar dois contatos com o mesmo nome e telefone completo após a normalização.
+- Não deve ser possível cadastrar dois contatos com o mesmo telefone completo após a normalização.
 - O nome deve ser aparado e truncado para até 50 caracteres, conforme as regras definidas.
 - O telefone completo deve ser aceito quando tiver 10 ou 11 dígitos após a normalização, independentemente da validade ANATEL do DDD.
 - Deve ser permitido criar, editar, consultar e salvar os dados de um determinado contato cadastrado.
